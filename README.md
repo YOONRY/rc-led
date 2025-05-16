@@ -16,6 +16,10 @@
 
 ---
 
+![KakaoTalk_20250516_164358389](https://github.com/user-attachments/assets/c08dc1f3-7101-4ed1-840f-d6fc703a21ce)
+
+
+---
 ## 🔌 핀 연결 구성
 
 ### R9D → Arduino Uno
@@ -32,8 +36,8 @@
 
 | 장치            | Arduino 핀 | 비고                    |
 | ------------- | --------- | --------------------- |
-| LED1 (On/Off) | D9        | CH1으로 제어              |
-| LED2 (밝기조절)   | D10       | CH2에서 analogWrite로 제어 |
+| LED1 (On/Off) | D9        | CH1에서 제어              |
+| LED2 (밝기조절)   | D10       | CH2에서 제어 |
 | RGB LED - 빨강  | D5        |                       |
 | RGB LED - 초록  | D6        |                       |
 | RGB LED - 파랑  | D3        |                       |
