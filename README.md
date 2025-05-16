@@ -12,7 +12,7 @@
 
 ## 🌐 유튜브 시연 영상
 
-> [시연 영상 보러가기](https://youtu.be/hRDZebeKj6o?si=OTun4FImhSfU06kO)
+> [시연 영상 보러가기](https://youtu.be/YvAUqBdZ6mY)
 
 ---
 
@@ -30,8 +30,8 @@
 
 | R9D 채널 | Arduino 핀 | 기능 설명                |
 | ------ | --------- | -------------------- |
-| CH1    | A0        | LED On/Off (SWG 스위치) |
-| CH2    | A1        | 밝기 조절                |
+| CH1    | A0        | 밝기 조절  |
+| CH2    | A1        | LED On/Off                |
 | CH3    | A2        | RGB 색상 전환            |
 | VCC    | 5V        | 전원 공급                |
 | GND    | GND       | 공통 접지                |
@@ -40,8 +40,8 @@
 
 | 장치            | Arduino 핀 | 비고                      |
 | ------------- | --------- | ----------------------- |
-| LED1 (On/Off) | D9        | CH1에서 제어                |
-| LED2 (밝기조절)   | D10       | CH2에서 제어                |
+| LED1 (On/Off) | D9        |  CH2에서 제어               |
+| LED2 (밝기조절)   | D10       | CH1에서 제어                |
 | RGB LED - 빨강  | D5        | analogWrite(PWM)로 색상 구성 |
 | RGB LED - 초록  | D6        | analogWrite(PWM)로 색상 구성 |
 | RGB LED - 파랑  | D3        | analogWrite(PWM)로 색상 구성 |
