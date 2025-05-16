@@ -16,10 +16,10 @@
 
 ---
 
-![KakaoTalk_20250516_164358389](https://github.com/user-attachments/assets/c08dc1f3-7101-4ed1-840f-d6fc703a21ce)
-
+![KakaoTalk\_20250516\_164358389](https://github.com/user-attachments/assets/c08dc1f3-7101-4ed1-840f-d6fc703a21ce)
 
 ---
+
 ## 🔌 핀 연결 구성
 
 ### R9D → Arduino Uno
@@ -34,13 +34,13 @@
 
 ### Arduino 출력 핀
 
-| 장치            | Arduino 핀 | 비고                    |
-| ------------- | --------- | --------------------- |
-| LED1 (On/Off) | D9        | CH1에서 제어              |
-| LED2 (밝기조절)   | D10       | CH2에서 제어 |
-| RGB LED - 빨강  | D5        |                       |
-| RGB LED - 초록  | D6        |                       |
-| RGB LED - 파랑  | D3        |                       |
+| 장치            | Arduino 핀 | 비고                      |
+| ------------- | --------- | ----------------------- |
+| LED1 (On/Off) | D9        | CH1에서 제어                |
+| LED2 (밝기조절)   | D10       | CH2에서 제어                |
+| RGB LED - 빨강  | D5        | analogWrite(PWM)로 색상 구성 |
+| RGB LED - 초록  | D6        | analogWrite(PWM)로 색상 구성 |
+| RGB LED - 파랑  | D3        | analogWrite(PWM)로 색상 구성 |
 
 ---
 
@@ -56,7 +56,8 @@ if (ch1Pulse > 1600) {
 }
 ```
 
-* 조종기의 **SWG 스위치** 아래로 내렸을 때 LED가 켜짐
+* **레버**의 위치에 따라 PWM 값이 1600보다 크면 D9 핀에 HIGH 출력
+* 레버를 조작할때 LED가 켜졌다 꺼지는 것을 확인할 수 있음
 
 ### 2. LED 밝기 조절 (CH2 → D10)
 
@@ -65,7 +66,9 @@ int brightness = map(ch2Pulse, 1000, 2000, 0, 255);
 analogWrite(LED2_PIN, brightness);
 ```
 
-* 스틱 또는 노브 위치에 따라 밝기 연속 조절
+* PWM 신호의 폭(1000~~2000us)을 0~~255로 매핑하여 `analogWrite()`로 출력
+* 밝기 제어용 LED는 D10에 연결되며, PWM 신호로 아날로그 밝기 제어됨
+* 조종기의 스틱 또는 노브를 위/아래로 움직이면 밝기가 점점 밝아지고 어두워짐
 
 ### 3. RGB 색상 전환 (CH3 → D5/D6/D3)
 
@@ -74,6 +77,8 @@ if (ch3Pulse > 1700) {
     changeColor();
 }
 ```
+
+* CH3의 PWM 값이 일정 값 이상일 때 `changeColor()` 함수 실행 → 색상 순환 전환
 
 ```cpp
 void changeColor() {
@@ -89,6 +94,9 @@ void changeColor() {
 }
 ```
 
+* `setRGB()`는 D5(R), D6(G), D3(B)에 각각 PWM 신호를 주어 색을 혼합함
+* 순차적으로 색이 바뀌며, 조종기의 스위치나 레버를 움직일 때마다 다른 색을 보여줌
+
 ---
 
 ## 📂 파일 구조
@@ -98,15 +106,4 @@ void changeColor() {
 │   └── main.cpp            # Arduino 소스코드 (주석 포함)
 ├── README.md               # 프로젝트 설명 문서
 ```
-
 ---
-
-## 📊 재현을 위한 참고 사항
-
-* **R9D와 Arduino의 GND를 반드시 연결**할 것
-* **공통 캐소드 RGB LED 사용 권장**
-* **LED 출력 핀에는 220Ω\~330Ω 저항 연결**
-* **수신기 전원은 Arduino 5V 사용 가능하나 안정된 전원 권장**
-
----
-```
