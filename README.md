@@ -70,7 +70,7 @@ int brightness = map(ch2Pulse, 1000, 2000, 0, 255);
 analogWrite(LED2_PIN, brightness);
 ```
 
-* 수신기의 PWM 폭(1000~~2000us)을 0~~255 밝기로 변환해 `analogWrite()`로 출력
+* 수신기의 PWM 폭(1000~2000)을 0~~255 밝기로 변환해 `analogWrite()`로 출력
 * D10 핀은 PWM을 통해 LED2 밝기를 연속적으로 조절함
 * 조종기의 **레버**을 위/아래로 움직이면 밝기 점점 증가/감소
 
