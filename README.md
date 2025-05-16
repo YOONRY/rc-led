@@ -15,11 +15,12 @@
 > [시연 영상 보러가기](https://youtu.be/hRDZebeKj6o?si=OTun4FImhSfU06kO)
 
 ---
-회로도 구성
+
+## ⚡️ 회로도 구성
 
 ![KakaoTalk\_20250516\_164358389](https://github.com/user-attachments/assets/c08dc1f3-7101-4ed1-840f-d6fc703a21ce)
 
-브레드 보드 중앙에서 살짝 오른쪽 위의 빨간선은 해당 프로젝트와는 아무런 상관이 없으니 빼셔도 무방합니다
+> ⚠️ 참고: 브레드보드 중앙에서 살짝 오른쪽 위의 빨간선은 해당 프로젝트와는 무관하므로 제거해도 됩니다.
 
 ---
 
@@ -60,7 +61,7 @@ if (ch1Pulse > 1600) {
 ```
 
 * **레버**의 위치에 따라 PWM 값이 1600보다 크면 D9 핀에 HIGH 출력
-* 레버를 조작할때 LED가 켜졌다 꺼지는 것을 확인할 수 있음
+* LED1은 HIGH 상태에서 켜지고 LOW 상태에서 꺼지므로, 스위치를 위/아래로 조작하여 LED On/Off 제어 가능
 
 ### 2. LED 밝기 조절 (CH2 → D10)
 
@@ -69,9 +70,9 @@ int brightness = map(ch2Pulse, 1000, 2000, 0, 255);
 analogWrite(LED2_PIN, brightness);
 ```
 
-* PWM 신호의 폭(1000~~2000us)을 0~~255로 매핑하여 `analogWrite()`로 출력
-* 밝기 제어용 LED는 D10에 연결되며, PWM 신호로 아날로그 밝기 제어됨
-* 조종기의 스틱 또는 노브를 위/아래로 움직이면 밝기가 점점 밝아지고 어두워짐
+* 수신기의 PWM 폭(1000~~2000us)을 0~~255 밝기로 변환해 `analogWrite()`로 출력
+* D10 핀은 PWM을 통해 LED2 밝기를 연속적으로 조절함
+* 조종기의 **레버**을 위/아래로 움직이면 밝기 점점 증가/감소
 
 ### 3. RGB 색상 전환 (CH3 → D5/D6/D3)
 
@@ -81,7 +82,7 @@ if (ch3Pulse > 1700) {
 }
 ```
 
-* CH3의 PWM 값이 일정 값 이상일 때 `changeColor()` 함수 실행 → 색상 순환 전환
+* CH3의 PWM 신호가 일정 값 이상이면 `changeColor()` 함수 호출되어 색이 순차적으로 바뀜
 
 ```cpp
 void changeColor() {
@@ -97,8 +98,31 @@ void changeColor() {
 }
 ```
 
-* `setRGB()`는 D5(R), D6(G), D3(B)에 각각 PWM 신호를 주어 색을 혼합함
-* 순차적으로 색이 바뀌며, 조종기의 레버를 움직일 때마다 다른 색을 보여줌
+* `setRGB()` 함수는 각각의 RGB 핀(D5/D6/D3)에 PWM 신호를 출력하여 색을 혼합 생성
+* 조종기의 레버 조작 시 6가지 색상이 순차적으로 출력됨
+
+---
+
+### ✨ 핀체인지 인터럽트 처리 원리
+
+PWM 신호는 \*\*상승 에지(HIGH)\*\*와 \*\*하강 에지(LOW)\*\*를 감지하여 신호의 폭(길이)을 측정합니다.
+핀체인지 인터럽트를 통해 아래와 같은 방식으로 처리됩니다:
+
+```cpp
+// === 인터럽트 핸들러: 채널 1 ===
+void handleCH1() {
+  if (digitalRead(CH1_PIN) == HIGH)
+    ch1Start = micros(); // 상승 에지 시간 저장
+  else if (ch1Start && !newCh1) {
+    ch1Pulse = micros() - ch1Start; // 하강 에지에서 펄스폭 계산
+    ch1Start = 0;
+    newCh1 = true; // loop()에서 처리 가능하도록 플래그 설정
+  }
+}
+```
+
+* 동일한 방식으로 CH2, CH3도 각각 인터럽트로 측정합니다.
+* loop()에서는 `newChX`가 true일 때만 새로운 입력으로 반응하여 동작을 수행함
 
 ---
 
@@ -109,4 +133,6 @@ void changeColor() {
 │   └── main.cpp            # Arduino 소스코드 (주석 포함)
 ├── README.md               # 프로젝트 설명 문서
 ```
+
 ---
+
