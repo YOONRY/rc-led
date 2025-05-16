@@ -15,9 +15,11 @@
 > [시연 영상 보러가기](https://youtu.be/hRDZebeKj6o?si=OTun4FImhSfU06kO)
 
 ---
+회로도 구성
 
 ![KakaoTalk\_20250516\_164358389](https://github.com/user-attachments/assets/c08dc1f3-7101-4ed1-840f-d6fc703a21ce)
 
+브레드 보드 중앙에서 살짝 오른쪽 위의 빨간선은 해당 프로젝트와는 아무런 상관이 없으니 빼셔도 무방합니다
 ---
 
 ## 🔌 핀 연결 구성
